@@ -1,0 +1,180 @@
+swagger: "2.0"
+info:
+  description: "This API specification is part of the [alley](http://alley.de) Coding Challenge for Fullstack Engineers."
+  version: "1.0.0"
+  title: "Dropbox Tagging API"
+tags:
+  - name: "file"
+    description: "Everything about your files"
+schemes:
+  - "http"
+paths:
+  /file/search:
+    get:
+      tags:
+        - "file"
+      summary: "Search files in Dropbox"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "fileName"
+          in: "query"
+          description: "String part of the name"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            description: "List of tags associated to a file"
+            items:
+              $ref: "#/definitions/File"
+
+  /file/{fileId}:
+    get:
+      tags:
+        - "file"
+      summary: "Get information about a file stored on Dropbox"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "fileId"
+          in: "path"
+          description: "ID of file to return"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/File"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "File not found"
+
+  /file/{fileId}/tags:
+    post:
+      tags:
+        - "file"
+      summary: "Set tags for a file with a given (Dropbox) identifier."
+      description: "If this file had tags before, they will be reset."
+      parameters:
+        - name: "fileId"
+          in: "path"
+          description: "ID of file to return"
+          required: true
+          type: "string"
+        - name: "tags"
+          in: "body"
+          description: "List of tags to add"
+          required: true
+          schema:
+            $ref: "#/definitions/TagForm"
+      responses:
+        "201":
+          description: "successful operation"
+        "400":
+          description: "Invalid parameters supplied"
+        "404":
+          description: "File not found"
+    put:
+      tags:
+        - "file"
+      summary: "Add tags to a file with a given (Dropbox) identifier."
+      description: "If this file had tags before, they will merged with the new tags."
+      parameters:
+        - name: "fileId"
+          in: "path"
+          description: "ID of file to return"
+          required: true
+          type: "string"
+        - name: "tags"
+          in: "body"
+          description: "List of tags to add"
+          required: true
+          schema:
+            $ref: "#/definitions/TagForm"
+      responses:
+        "204":
+          description: "successful operation"
+        "400":
+          description: "Invalid parameters supplied"
+        "404":
+          description: "File not found"
+    delete:
+      tags:
+        - "file"
+      summary: "Remove tags from a file with a given (Dropbox) identifier."
+      description: "Non-existing tags will be ignored."
+      parameters:
+        - name: "fileId"
+          in: "path"
+          description: "ID of file to return"
+          required: true
+          type: "string"
+        - name: "tags"
+          in: "body"
+          description: "List of tags to remove"
+          required: true
+          schema:
+            $ref: "#/definitions/TagForm"
+      responses:
+        "204":
+          description: "successful operation"
+        "400":
+          description: "Invalid parameters supplied"
+        "404":
+          description: "File not found"
+
+definitions:
+  File:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Dropbox file ID"
+        example: "id:OMniijB6DbEAAAAAAAA19A"
+      name:
+        type: "string"
+        description: "Name of the file stored on Dropbox"
+        example: "Domain Driven Design.epub"
+      path:
+        type: "string"
+        description: "File path within Dropbox"
+        example: "/ebook/programming/domain driven design.epub"
+      size:
+        type: "integer"
+        format: "int64"
+        description: "File size in bytes"
+      tags:
+        type: "array"
+        description: "List of tags associated to a file"
+        items:
+          type: "string"
+        example:
+          - "ebook"
+          - "dev"
+          - "must-read"
+    required:
+      - "id"
+      - "name"
+      - "path"
+      - "size"
+      - "tags"
+  TagForm:
+    type: "object"
+    properties:
+      tags:
+        type: "array"
+        description: "List of tags associated to a file"
+        items:
+          type: "string"
+        example:
+          - "foo"
+          - "bar"
+    required:
+      - "tags"
