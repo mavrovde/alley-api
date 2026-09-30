@@ -16,13 +16,13 @@
 
     <properties>
         <jib-maven-plugin.version>2.2.0</jib-maven-plugin.version>
-        <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
+        <spring-boot.version>2.5.12</spring-boot.version>
         <docker.image>alley-api</docker.image>
         <compile.plugin.version>3.8.1</compile.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
-        <elastic.search.client.version>7.9.0</elastic.search.client.version>
-        <jackson.version>2.9.8</jackson.version>
+        <elastic.search.client.version>7.17.25</elastic.search.client.version>
+        <jackson.version>2.18.10</jackson.version>
         <dropbox.sdk.version>3.1.5</dropbox.sdk.version>
         <test.containers.version>1.14.3</test.containers.version>
     </properties>
@@ -77,7 +77,7 @@
         <dependency>
             <groupId>org.springframework.hateoas</groupId>
             <artifactId>spring-hateoas</artifactId>
-            <version>1.1.1.RELEASE</version>
+            <version>2.0.5</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
